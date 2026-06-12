@@ -17,8 +17,14 @@ const urlSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
+  },
+  expiresAt: {
+    type: Date,
+    required: true
   }
 });
+
+urlSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
 const Url = mongoose.model("Url", urlSchema);
 
