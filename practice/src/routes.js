@@ -3,6 +3,7 @@ const Url = require("./models/Url");
 const Counter = require("./models/Counter");
 const encodeBase62 = require("./utils/base62");
 const redis = require("./redis");
+const tokenBucketRateLimiter = require("./middleware/rateLimiter");
 
 const router = express.Router();
 
@@ -38,7 +39,7 @@ function getRedisTtlSeconds(expiresAt) {
   return Math.min(24 * 60 * 60, secondsUntilExpiry);
 }
 
-router.post("/shorten", async (req, res) => {
+router.post("/shorten", tokenBucketRateLimiter(), async (req, res) => {
   try {
     const { url, ttlDays } = req.body;
 
