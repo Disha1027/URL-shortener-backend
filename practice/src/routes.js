@@ -39,6 +39,11 @@ function getRedisTtlSeconds(expiresAt) {
   return Math.min(24 * 60 * 60, secondsUntilExpiry);
 }
 
+function getBaseUrl(req) {
+  const baseUrl = process.env.BASE_URL || `${req.protocol}://${req.get("host")}`;
+  return baseUrl.replace(/\/$/, "");
+}
+
 router.post("/shorten", tokenBucketRateLimiter(), async (req, res) => {
   try {
     const { url, ttlDays } = req.body;
@@ -76,7 +81,7 @@ if (!expiresAt) {
     return res.json({
       originalUrl: newUrl.originalUrl,
       shortCode: newUrl.shortCode,
-      shortUrl: `http://localhost:3000/${newUrl.shortCode}`,
+      shortUrl: `${getBaseUrl(req)}/${newUrl.shortCode}`,
       expiresAt: newUrl.expiresAt
     });
   } catch (error) {
