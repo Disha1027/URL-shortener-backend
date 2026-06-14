@@ -232,6 +232,12 @@ REDIS_URL=<Upstash Redis connection string>
 NODE_ENV=production
 ```
 
+## Screenshots
+
+### System Design Diagram
+
+![System Design Diagram](./screenshots/architecture.png)
+
 ## What I Learned
 
 - How Express handles API routes and middleware
